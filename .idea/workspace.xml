@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d600fa91-e781-4e5a-ac25-30d245eb5018" name="Default Changelist" comment="" />
+    <list default="true" id="d600fa91-e781-4e5a-ac25-30d245eb5018" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hw2/assignment_2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hw1/assignment_1.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/hw1/assignment_1.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hw1/data-demands-deliveyconstraint.csv" beforeDir="false" afterPath="$PROJECT_DIR$/hw1/data-demands-deliveyconstraint.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hw1/data-demands-deliveyconstraint.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/hw1/data-demands-deliveyconstraint.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lecture 4/Lecture04_code.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/lecture 4/Lecture04_code.ipynb" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,7 +22,11 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1o3TCgWTJDCaZiVbHRF7wAqayPC" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -22,9 +34,15 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/hw1" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -35,7 +53,10 @@
       <option name="presentableId" value="Default" />
       <updated>1612514148507</updated>
       <workItem from="1612514149856" duration="126000" />
-      <workItem from="1612514360379" duration="5299000" />
+      <workItem from="1612514360379" duration="16870000" />
+      <workItem from="1612589990953" duration="506000" />
+      <workItem from="1612685900222" duration="1424000" />
+      <workItem from="1613311628183" duration="1049000" />
     </task>
     <servers />
   </component>
