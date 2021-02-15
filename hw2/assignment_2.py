@@ -57,7 +57,8 @@ def qn2():
     # Variables
     number_ads = m.addVars(types_of_ads,  name="number_ads")
 
-    # number_ads = m.addVars(types_of_ads, v=type = GRB.INTEGER, name="number_ads")
+    # if we wanted to do integer programming
+    # number_ads = m.addVars(types_of_ads, vtype = GRB.INTEGER, name="number_ads")
 
     # Parameters constants
     audience_reached = {
@@ -77,7 +78,7 @@ def qn2():
         ("radio", "female", "young"): 7500
     }
 
-    costs = {"tv": 15000, "newspaper": 4000, "radio": 15000}
+    costs = {"tv": 15000, "newspaper": 4000, "radio": 6000}
 
     # Objective
     m.setObjective(quicksum(costs[ad_type] * number_ads[ad_type] for ad_type in types_of_ads), GRB.MINIMIZE)
