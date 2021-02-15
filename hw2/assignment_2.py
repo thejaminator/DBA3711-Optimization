@@ -43,4 +43,91 @@ def qn1():
     print(m.getAttr("Pi", m.getConstrs()))
 
 
-qn1()
+# qn1()
+
+def qn2():
+    # Create a new model
+    m: Model = Model("advertising")
+
+    # Sets
+    types_of_ads = set(["tv", "newspaper", "radio"])
+    genders = set(["male", "female"])
+    age_brackets = set(["senior", "young"])
+
+    # Variables
+    number_ads = m.addVars(types_of_ads,  name="number_ads")
+
+    # number_ads = m.addVars(types_of_ads, v=type = GRB.INTEGER, name="number_ads")
+
+    # Parameters constants
+    audience_reached = {
+        ("tv", "male", "senior"): 5000,
+        ("tv", "male", "young"): 5000,
+        ("tv", "female", "senior"): 5000,
+        ("tv", "female", "young"): 10000,
+
+        ("newspaper", "male", "senior"): 4000,
+        ("newspaper", "male", "young"): 2000,
+        ("newspaper", "female", "senior"): 3000,
+        ("newspaper", "female", "young"): 1000,
+
+        ("radio", "male", "senior"): 1500,
+        ("radio", "male", "young"): 4500,
+        ("radio", "female", "senior"): 1500,
+        ("radio", "female", "young"): 7500
+    }
+
+    costs = {"tv": 15000, "newspaper": 4000, "radio": 15000}
+
+    # Objective
+    m.setObjective(quicksum(costs[ad_type] * number_ads[ad_type] for ad_type in types_of_ads), GRB.MINIMIZE)
+
+    # Subject to constraints
+    # a
+    m.addConstr(
+        quicksum([number_ads["radio"] * audience_reached["radio", j, k]
+                  for j in genders
+                  for k in age_brackets]) >=
+        2 * quicksum([number_ads["newspaper"] * audience_reached["newspaper", j, k]
+                      for j in genders
+                      for k in age_brackets]))
+
+    # b
+    total_audience = quicksum([number_ads[i] * audience_reached[i, j, k]
+                               for i in types_of_ads
+                               for j in genders
+                               for k in age_brackets])
+    m.addConstr(total_audience >= 100000)
+
+    # c
+    m.addConstr(
+        quicksum([number_ads[i] * audience_reached[i, j, "young"]
+                  for i in types_of_ads
+                  for j in genders]) >=
+        2 * quicksum([number_ads[i] * audience_reached[i, j, "senior"]
+                      for i in types_of_ads
+                      for j in genders]))
+
+    # d
+    m.addConstr(
+        quicksum([number_ads[i] * audience_reached[i, "female", k]
+                  for i in types_of_ads
+                  for k in age_brackets]) >= 0.6 * total_audience)
+
+    # e
+    m.addConstr(number_ads["newspaper"] <= 7)
+
+    m.optimize()
+
+    # # print optimal solutions
+    for v in m.getVars():
+        print(f"{v.varName} = {v.x}")
+
+    # # print optimal value
+    # print('Obj: %g' % m.objVal)
+    #
+    # # print dual values to all constraints
+    # print(m.getAttr("Pi", m.getConstrs()))
+
+
+qn2()
