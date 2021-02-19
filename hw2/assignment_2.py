@@ -22,19 +22,32 @@ def qn1():
     # Set objective
     m.setObjective(0.04 * sum(loans_per_month) + 0.12 * six_month_loan, GRB.MINIMIZE)
 
-    # Set constraints
-    for single_month_loan, liab, rev in zip(loans_per_month, liab_per_month, rev_per_month):
-        m.addConstr(six_month_loan + single_month_loan >= liab - rev, name="Requirements per month")
+    n1 = six_month_loan + loans_per_month[0] + rev_per_month[0] - liab_per_month[0]
+    n2 = n1 + loans_per_month[1] + rev_per_month[1] - liab_per_month[1] - 1.04*loans_per_month[0]
+    n3 = n2 + loans_per_month[2] + rev_per_month[2] - liab_per_month[2] - 1.04 * loans_per_month[1]
+    n4 = n3 + loans_per_month[3] + rev_per_month[3] - liab_per_month[3] - 1.04 * loans_per_month[2]
+    n5 = n4 + loans_per_month[4] + rev_per_month[4] - liab_per_month[4] - 1.04 * loans_per_month[3]
+    n6 = n5 + loans_per_month[5] + rev_per_month[5] - liab_per_month[5] - 1.04 * loans_per_month[4]
+
+
 
     m.addConstr(six_month_loan >= 0, name="Non negativity")
     for single_month_loan in loans_per_month:
         m.addConstr(single_month_loan >= 0, name="Non negativity")
 
+    m.addConstr(n1 >= 0, name="Cashflow")
+    m.addConstr(n2 >= 0, name="Cashflow")
+    m.addConstr(n3 >= 0, name="Cashflow")
+    m.addConstr(n4 >= 0, name="Cashflow")
+    m.addConstr(n5 >= 0, name="Cashflow")
+    m.addConstr(n6 >= 0, name="Cashflow")
+
+
     m.optimize()
 
     # # print optimal solutions
     for v in m.getVars():
-        print('%s = %d' % (v.varName, v.x))
+        print('%s = %f' % (v.varName, v.x))
 
     # print optimal value
     print('Obj: %g' % m.objVal)
@@ -43,7 +56,7 @@ def qn1():
     print(m.getAttr("Pi", m.getConstrs()))
 
 
-# qn1()
+qn1()
 
 def qn2():
     # Create a new model
@@ -131,4 +144,4 @@ def qn2():
     # print(m.getAttr("Pi", m.getConstrs()))
 
 
-qn2()
+# qn2()
