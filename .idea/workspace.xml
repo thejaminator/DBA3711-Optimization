@@ -4,7 +4,6 @@
     <list default="true" id="d600fa91-e781-4e5a-ac25-30d245eb5018" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hw3/hw3.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/hw3/hw3.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lecture 5/Lecture05_code.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/lecture 5/Lecture05_code.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,7 +65,7 @@
       <workItem from="1613311628183" duration="8326000" />
       <workItem from="1613736367512" duration="1240000" />
       <workItem from="1616134750164" duration="3961000" />
-      <workItem from="1616231275452" duration="14631000" />
+      <workItem from="1616231275452" duration="16873000" />
     </task>
     <servers />
   </component>
