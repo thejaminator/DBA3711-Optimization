@@ -2,15 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d600fa91-e781-4e5a-ac25-30d245eb5018" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/hw3/hw3.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture 6/Lecture06.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture 6/Lecture06_code.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture 6/Pottery Company.xls" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lecture 3/Lecture03.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lecture 3/Lecture03_code.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Lecture 3/Lecture03_code.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lecture1/Lecture1.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lecture2/Lecture02.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hw3/hw3.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/hw3/hw3.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lecture 5/Lecture05_code.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/lecture 5/Lecture05_code.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +66,7 @@
       <workItem from="1613311628183" duration="8326000" />
       <workItem from="1613736367512" duration="1240000" />
       <workItem from="1616134750164" duration="3961000" />
-      <workItem from="1616231275452" duration="10414000" />
+      <workItem from="1616231275452" duration="14631000" />
     </task>
     <servers />
   </component>
