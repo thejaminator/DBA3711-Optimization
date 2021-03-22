@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d600fa91-e781-4e5a-ac25-30d245eb5018" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/hw3/flow_diagram_q4.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hw3/hw3.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/hw3/hw3.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,7 +67,7 @@
       <workItem from="1616134750164" duration="3961000" />
       <workItem from="1616231275452" duration="16873000" />
       <workItem from="1616255171928" duration="1876000" />
-      <workItem from="1616312825684" duration="5840000" />
+      <workItem from="1616312825684" duration="6063000" />
     </task>
     <servers />
   </component>
