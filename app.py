@@ -1,4 +1,4 @@
-from math import ceil
+from math import ceil, floor
 from typing import *
 import streamlit as st
 import pathlib
@@ -93,19 +93,19 @@ def to_mat_idx(pokemon_id: PokedexId):
 
 def get_turns_to_defeat(x: pd.DataFrame, team_ids: List[PokedexId], opponent_ids: List[PokedexId]):
     """x: NxN matrix indicating turns to defeat opponent pokemon"""
-    return [ceil(x.iloc[to_mat_idx(team_id), to_mat_idx(opponent_id)]) for team_id, opponent_id in
+    return [floor(x.iloc[to_mat_idx(team_id), to_mat_idx(opponent_id)]) for team_id, opponent_id in
             zip(team_ids, opponent_ids)]
 
 
 def get_turn_difference(t: pd.DataFrame, team_ids: List[PokedexId], opponent_ids: List[PokedexId]):
     """t: NxN matrix indicating turn difference aainst opponent pokemon"""
-    return [ceil(t.iloc[to_mat_idx(team_id), to_mat_idx(opponent_id)]) for team_id, opponent_id in
+    return [floor(t.iloc[to_mat_idx(team_id), to_mat_idx(opponent_id)]) for team_id, opponent_id in
             zip(team_ids, opponent_ids)]
 
 
 def get_damage(d: pd.DataFrame, team_ids: List[PokedexId], opponent_ids: List[PokedexId]):
     """d: NxN matrix indicating damage agaun opponent pokemon"""
-    return [ceil(d.iloc[to_mat_idx(team_id), to_mat_idx(opponent_id)]) for team_id, opponent_id in
+    return [floor(d.iloc[to_mat_idx(team_id), to_mat_idx(opponent_id)]) for team_id, opponent_id in
             zip(team_ids, opponent_ids)]
 
 
@@ -167,10 +167,16 @@ blank_slot = st.empty()  # no need to render below elements by using a blank slo
 if unique_pokemon:
     blank_slot.write(
         "Added constraint $C_{i,j} \leq 1$ for all j $\in$ Opponent Pokemons")
-best_team: List[PokedexId] = run_model(data=data, t=t, x=x, opponents=selected_opponent.pokemons,
+
+min_turn_difference = st.slider("Minimum turn difference",min_value=0, max_value=20, step=1)
+try:
+    best_team: List[PokedexId] = run_model(data=data, t=t, x=x, opponents=selected_opponent.pokemons,
                                        enforce_unique_pokemon=unique_pokemon,
                                        maximise_turn_difference=turn_difference_chosen,
-                                       banned_pokemon=[poke_id for poke_id in banned_pokemon if poke_id is not None])
+                                       banned_pokemon=[poke_id for poke_id in banned_pokemon if poke_id is not None],
+                                       min_turn_difference=min_turn_difference)
+except AttributeError as e:
+    raise AssertionError("Infeasible Model")
 
 draw_pokemons(best_team)
 

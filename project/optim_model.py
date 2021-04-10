@@ -14,9 +14,16 @@ def run_model(data: pd.DataFrame, x: pd.DataFrame,
               opponents: List[PokedexId],
               enforce_unique_pokemon: bool,
               maximise_turn_difference: bool,
-              banned_pokemon: List[PokedexId]
+              banned_pokemon: List[PokedexId],
+              min_turn_difference: int = 0,
+
               ) -> List[PokedexId]:
     """Returns list of optimal pokedex pokemon ids, sorted in same order as the opponents"""
+
+
+    # couldn't put this into the line >> chosen pokemons must be able to defeat opponent (no negative turn difference).
+    # because if constraint is for the all the products to be  greater than e.g. 1, then all the pokemon would need to be chosen
+    t = t - min_turn_difference
 
     def to_mat_idx(pokemon_id: PokedexId):
         return pokemon_id - 1  # should do data[data.pokedex_number == pokemon_id].index[0] if order is not assured
