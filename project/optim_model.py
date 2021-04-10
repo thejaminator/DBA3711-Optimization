@@ -15,11 +15,11 @@ def run_model(data: pd.DataFrame, x: pd.DataFrame,
               enforce_unique_pokemon: bool,
               maximise_turn_difference: bool,
               banned_pokemon: List[PokedexId],
+              must_have_pokemon: List[PokedexId],
               min_turn_difference: int = 0,
 
               ) -> List[PokedexId]:
     """Returns list of optimal pokedex pokemon ids, sorted in same order as the opponents"""
-
 
     def to_mat_idx(pokemon_id: PokedexId):
         return pokemon_id - 1  # should do data[data.pokedex_number == pokemon_id].index[0] if order is not assured
@@ -49,7 +49,7 @@ def run_model(data: pd.DataFrame, x: pd.DataFrame,
         mod.addConstrs(sum(c[i, j] for j in range(no_opponents)) <= 1 for i in range(no_pokemons))
     mod.addConstrs(sum(c[i, j] for i in range(no_pokemons)) == 1 for j in range(no_opponents))
     # chosen pokemons must be able to defeat opponent (no negative turn difference or less than min_turn_difference)
-    mod.addConstrs((c[i,j] == 1) >> (c[i,j] * t.iloc[i, opponents[j] - 1] >= min_turn_difference)
+    mod.addConstrs((c[i, j] == 1) >> (c[i, j] * t.iloc[i, opponents[j] - 1] >= min_turn_difference)
                    for i in range(no_pokemons) for j in range(no_opponents))
 
     # for pokemons who are slower and turn difference < 1, they would be first defeated by opponent
@@ -58,6 +58,11 @@ def run_model(data: pd.DataFrame, x: pd.DataFrame,
 
     # optional - banned pokemon
     mod.addConstrs(sum(c[to_mat_idx(pokedex_id), j] for pokedex_id in banned_pokemon) == 0 for j in range(no_opponents))
+
+    # optional - must have pokemon
+    if len(must_have_pokemon) > 0:
+        mod.addConstrs(
+            sum(c[to_mat_idx(pokedex_id), j] for j in range(no_opponents)) == 1 for pokedex_id in must_have_pokemon)
 
     # solving the optimization problem
     mod.optimize()

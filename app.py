@@ -121,27 +121,30 @@ opponent_table  # draw opponent table
 
 """## Banned pokemon"""
 
-banned_pokemon: List[PokedexId] = [None]  # todo: some optimizaitons with st.empty() so you don't have to redraw page
 
-
-def draw_banned_pokemon():
-    for idx, pokemon_id in enumerate(banned_pokemon):
+def draw_multi_pokemon(unique_key: str, equal_to: int):
+    chosen_pokemon: List[PokedexId] = [
+        None]  # todo: some optimizaitons with st.empty() so you don't have to redraw page
+    for idx, pokemon_id in enumerate(chosen_pokemon):
         selected = st.selectbox(
             "",
             options=[None] + list(data.name),
-            key=f"banned_{idx}"
+            key=f"{unique_key}_{idx}"
         )
         blank_slot = st.empty()
         if selected is not None:  # Otherwise this will draw infinitely
-            # sum(c[to_mat_idx(pokedex_id), j] for pokedex_id in banned_pokemon) == 0
-            # for j in range(no_opponents)
             mat_idx = to_mat_idx(name_to_pokedex_number[selected])
             blank_slot.markdown(
-                f"Added constraint: $C_{{{mat_idx},j}} = 0$ for all $j \in$ Opponent Pokemons")
-            banned_pokemon.append(name_to_pokedex_number[selected])
+                f"Added constraint: $C_{{{mat_idx},j}} = {equal_to}$ for all $j \in$ Opponent Pokemons")
+            chosen_pokemon.append(name_to_pokedex_number[selected])
+    return chosen_pokemon
 
 
-draw_banned_pokemon()
+banned_pokemon = draw_multi_pokemon("banned", equal_to=0)
+
+"""## Pokemon I definitely want in the team"""
+
+must_have_pokemon = draw_multi_pokemon("must_have", equal_to=1)
 """## Optimal team"""
 
 
@@ -182,6 +185,8 @@ try:
                                            maximise_turn_difference=turn_difference_chosen,
                                            banned_pokemon=[poke_id for poke_id in banned_pokemon if
                                                            poke_id is not None],
+                                           must_have_pokemon=[poke_id for poke_id in must_have_pokemon if
+                                                              poke_id is not None],
                                            min_turn_difference=min_turn_difference)
 except AttributeError as e:
     raise AssertionError("Infeasible Model")  # Catch to show this rather than ugly attribute error.
