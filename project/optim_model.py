@@ -5,13 +5,15 @@ import numpy as np
 import pandas as pd
 from gurobipy import *
 
+from project.types import PokedexId
+
 
 def run_model(data: pd.DataFrame, x: pd.DataFrame,
               t: pd.DataFrame,
-              opponents: List[int],
+              opponents: List[PokedexId],
               enforce_unique_pokemon: bool,
               maximise_turn_difference: bool,
-              ) -> List[int]:
+              ) -> List[PokedexId]:
     """Returns list of optimal pokedex pokemon ids, sorted in same order as the opponents"""
     no_pokemons = len(data)
     no_opponents = len(opponents)

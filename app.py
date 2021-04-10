@@ -5,58 +5,11 @@ import pathlib
 import pandas as pd
 
 from project.dataset import load_dataset
+from project.opponents import OpponentInfo, agatha, loreli, bruno, lance, champion, custom
 from project.optim_model import run_model
+from project.types import PokedexId
 
 """## Choose your opponent"""
-
-PokedexId = int  # Type alias to indicate we want a PokedexId
-
-
-class OpponentInfo(NamedTuple):
-    opponent_name: str
-    pokemons: List[PokedexId]  # Six pokedex Ids
-
-
-agatha = OpponentInfo(opponent_name="Agatha", pokemons=[
-    94,  # gengar
-    42,  # golbat
-    93,  # haunter
-    24,  # arbok
-    94  # gengar
-])
-
-loreli = OpponentInfo(opponent_name="Lorei", pokemons=[
-    87,  # steelix
-    91,  # cloyster
-    80,  # slowbro
-    124,  # jynx
-    131  # lapras
-])
-
-bruno = OpponentInfo(opponent_name="Bruno", pokemons=[
-    95,  # onix
-    95,  # onix
-    107,
-    106,
-    68
-])
-
-lance = OpponentInfo(opponent_name="Lance", pokemons=[
-    130,
-    149,
-    149,
-    142,
-    148
-])
-
-champion = OpponentInfo(opponent_name="Champion Green", pokemons=[
-    18,
-    65,
-    112,
-    130,
-    59,
-    3
-])
 
 opponents: Dict[str, OpponentInfo] = {
     agatha.opponent_name: agatha,
@@ -64,7 +17,7 @@ opponents: Dict[str, OpponentInfo] = {
     bruno.opponent_name: bruno,
     lance.opponent_name: lance,
     champion.opponent_name: champion,
-
+    custom.opponent_name: custom
 }
 
 selected_opponent_key: str = st.selectbox(
@@ -73,6 +26,10 @@ selected_opponent_key: str = st.selectbox(
 )
 
 selected_opponent: OpponentInfo = opponents[selected_opponent_key]
+
+# data has attributes name, pokedex_number
+data, t, x, damage = load_dataset()
+
 
 
 def fetch_image_path(pokemon_id: PokedexId) -> pathlib.Path:
@@ -87,10 +44,22 @@ def draw_pokemons(pokemon_ids: List[PokedexId]):
     st.image(images)
 
 
-# data has attributes name, pokedex_number
-data, t, x, damage = load_dataset()
+"""## Selected Opponent"""
+st.write(selected_opponent.opponent_name)
 
-st.write("Selected opponent " + selected_opponent.opponent_name)
+if selected_opponent_key == custom.opponent_name:
+    name_id: Dict[str, PokedexId] = dict(zip(data.name, data.pokedex_number))
+    # custom opponent
+    columns = st.beta_columns(6)
+    custom_opponent_pokemon = [None] * 6
+    for idx, column in enumerate(columns):
+        with column:
+            custom.pokemons[idx] = name_id[st.selectbox(
+                "",
+                options=list(data.name),
+                index=custom.pokemons[idx]-1, # hack to show custom opponent pokemon on start
+                key=f"custom_{idx}"
+            )]
 draw_pokemons(selected_opponent.pokemons)
 
 
@@ -114,22 +83,27 @@ def get_hp(data: pd.DataFrame, pokedex_ids: List[PokedexId]):
     """data: pd.DataFrame with attribute pokedex_number, and calculated_hp"""
     return [data[data.pokedex_number == id].calculated_hp.iloc[0] for id in pokedex_ids]
 
+
 def to_mat_idx(pokemon_id: PokedexId):
     return data[data.pokedex_number == pokemon_id].index[0]
 
+
 def get_turns_to_defeat(x: pd.DataFrame, team_ids: List[PokedexId], opponent_ids: List[PokedexId]):
     """x: NxN matrix indicating turns to defeat opponent pokemon"""
-    return [ceil(x.iloc[to_mat_idx(team_id), to_mat_idx(opponent_id)]) for team_id, opponent_id in zip(team_ids, opponent_ids)]
+    return [ceil(x.iloc[to_mat_idx(team_id), to_mat_idx(opponent_id)]) for team_id, opponent_id in
+            zip(team_ids, opponent_ids)]
 
 
 def get_turn_difference(t: pd.DataFrame, team_ids: List[PokedexId], opponent_ids: List[PokedexId]):
     """t: NxN matrix indicating turn difference aainst opponent pokemon"""
-    return [ceil(t.iloc[to_mat_idx(team_id), to_mat_idx(opponent_id)]) for team_id, opponent_id in zip(team_ids, opponent_ids)]
+    return [ceil(t.iloc[to_mat_idx(team_id), to_mat_idx(opponent_id)]) for team_id, opponent_id in
+            zip(team_ids, opponent_ids)]
 
 
 def get_damage(d: pd.DataFrame, team_ids: List[PokedexId], opponent_ids: List[PokedexId]):
     """d: NxN matrix indicating damage agaun opponent pokemon"""
-    return [ceil(d.iloc[to_mat_idx(team_id), to_mat_idx(opponent_id)]) for team_id, opponent_id in zip(team_ids, opponent_ids)]
+    return [ceil(d.iloc[to_mat_idx(team_id), to_mat_idx(opponent_id)]) for team_id, opponent_id in
+            zip(team_ids, opponent_ids)]
 
 
 opponent_table = pd.DataFrame(
@@ -146,8 +120,11 @@ opponent_table  # draw opponent table
 
 unique_pokemon = st.checkbox("Enforce pokemon to be unique", value=True)
 maximise_turn_difference = st.checkbox("Maximise turn difference instead of minimizing turns to win", value=False)
+
+# st.write("$\sum_{i\in{All pokemons}} \sum_{j\in{Opponent pokemons}} Turns_{ij}$")
 best_team: List[PokedexId] = run_model(data=data, t=t, x=x, opponents=selected_opponent.pokemons,
-                                       enforce_unique_pokemon=unique_pokemon, maximise_turn_difference=maximise_turn_difference)
+                                       enforce_unique_pokemon=unique_pokemon,
+                                       maximise_turn_difference=maximise_turn_difference)
 
 draw_pokemons(best_team)
 
