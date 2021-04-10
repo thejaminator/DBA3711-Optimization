@@ -1,5 +1,5 @@
 
-from typing import List
+from typing import List, Dict
 
 import numpy as np
 import pandas as pd
@@ -10,6 +10,7 @@ def run_model(data: pd.DataFrame, x: pd.DataFrame,
               t: pd.DataFrame,
               opponents: List[int],
               enforce_unique_pokemon: bool,
+              maximise_turn_difference: bool,
               ) -> List[int]:
     no_pokemons = len(data)
     no_opponents = len(opponents)
@@ -21,8 +22,10 @@ def run_model(data: pd.DataFrame, x: pd.DataFrame,
 
     # setting the objective such that it helps us end the game as fast as possible
     # but if want to make it safer, we should maximise the turn difference:
-    # mod.setObjective(sum(c[i,j]*t.iloc[i,j] for i in range(no_pokemons) for j in range(no_opponents)), GRB.MAXIMIZE)
-    mod.setObjective(
+    if maximise_turn_difference:
+        mod.setObjective(sum(c[i,j]*t.iloc[i, opponents[j] - 1] for i in range(no_pokemons) for j in range(no_opponents)), GRB.MAXIMIZE)
+    else:
+        mod.setObjective(
         sum(c[i, j] * x.iloc[i, opponents[j] - 1] for i in range(no_pokemons) for j in range(no_opponents)),
         GRB.MINIMIZE)
 
@@ -45,11 +48,13 @@ def run_model(data: pd.DataFrame, x: pd.DataFrame,
 
     # print optimal solutions
     print('Optimal Assignment:')
-    optimal_pokemons: List[int] = []
+    optimal_pokemons: List[int] = [None] * no_opponents # hack to make empty list to assign the results in order
+    # optimal_pokemons: Dict[int, int] = {}
     for index, v in c.items(): # index[0] is the best pokemon to fight against the opponent
         if v.getAttr("x") == 1:
             print("Pokemon {i} should battle pokemon {j}".format(i=data.name[index[0]],
                                                                  j=data.name[opponents[index[1]] - 1]))
-            print(data.pokedex_number[index[0]])
-            optimal_pokemons.append(data.pokedex_number[index[0]])
+            optimal_pokemon = data.pokedex_number[index[0]]
+            opponent_idx = index[1] # this is not returned in order, so we need to assign it directly
+            optimal_pokemons[opponent_idx] = optimal_pokemon
     return optimal_pokemons

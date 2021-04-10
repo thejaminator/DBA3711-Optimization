@@ -145,8 +145,9 @@ opponent_table  # draw opponent table
 """## Optimal team"""
 
 unique_pokemon = st.checkbox("Enforce pokemon to be unique", value=True)
+maximise_turn_difference = st.checkbox("Maximise turn difference instead of minimizing turns to win", value=False)
 best_team: List[PokedexId] = run_model(data=data, t=t, x=x, opponents=selected_opponent.pokemons,
-                                       enforce_unique_pokemon=unique_pokemon)
+                                       enforce_unique_pokemon=unique_pokemon, maximise_turn_difference=maximise_turn_difference)
 
 draw_pokemons(best_team)
 
