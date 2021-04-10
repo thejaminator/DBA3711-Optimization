@@ -1,13 +1,16 @@
 
 from typing import List
 
+import numpy as np
 import pandas as pd
 from gurobipy import *
 
 
 def run_model(data: pd.DataFrame, x: pd.DataFrame,
               t: pd.DataFrame,
-              opponents: List[int]) -> List[int]:
+              opponents: List[int],
+              enforce_unique_pokemon: bool,
+              ) -> List[int]:
     no_pokemons = len(data)
     no_opponents = len(opponents)
     # preparing an optimization model
@@ -25,7 +28,8 @@ def run_model(data: pd.DataFrame, x: pd.DataFrame,
 
     # adding constraints
     # comment next line out if want to remove constraint of only one of each pokemon in pokedex
-    mod.addConstrs(sum(c[i, j] for j in range(no_opponents)) <= 1 for i in range(no_pokemons))
+    if enforce_unique_pokemon:
+        mod.addConstrs(sum(c[i, j] for j in range(no_opponents)) <= 1 for i in range(no_pokemons))
     mod.addConstrs(sum(c[i, j] for i in range(no_pokemons)) == 1 for j in range(no_opponents))
     # chosen pokemons must be able to defeat opponent (no negative turn difference)
     mod.addConstrs(c[i, j] * t.iloc[i, opponents[j] - 1] >= 0 for i in range(no_pokemons) for j in range(no_opponents))

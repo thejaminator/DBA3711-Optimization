@@ -109,13 +109,13 @@ def get_type_2(data: pd.DataFrame, pokedex_ids: List[PokedexId]):
     """data: pd.DataFrame with attribute pokedex_number, and type_2"""
     return [data[data.pokedex_number == id].type_2.iloc[0] for id in pokedex_ids]
 
-def to_mat_idx(pokemon_id: PokedexId):
-    return data[data.pokedex_number == pokemon_id].index[0]
 
 def get_hp(data: pd.DataFrame, pokedex_ids: List[PokedexId]):
     """data: pd.DataFrame with attribute pokedex_number, and calculated_hp"""
-    return [data[data.pokedex_number == to_mat_idx(id)].calculated_hp.iloc[0] for id in pokedex_ids]
+    return [data[data.pokedex_number == id].calculated_hp.iloc[0] for id in pokedex_ids]
 
+def to_mat_idx(pokemon_id: PokedexId):
+    return data[data.pokedex_number == pokemon_id].index[0]
 
 def get_turns_to_defeat(x: pd.DataFrame, team_ids: List[PokedexId], opponent_ids: List[PokedexId]):
     """x: NxN matrix indicating turns to defeat opponent pokemon"""
@@ -142,15 +142,19 @@ opponent_table = pd.DataFrame(
 
 opponent_table  # draw opponent table
 
-best_team: List[PokedexId] = run_model(data=data, t=t, x=x, opponents=selected_opponent.pokemons)
-
 """## Optimal team"""
+
+unique_pokemon = st.checkbox("Enforce pokemon to be unique", value=True)
+best_team: List[PokedexId] = run_model(data=data, t=t, x=x, opponents=selected_opponent.pokemons,
+                                       enforce_unique_pokemon=unique_pokemon)
+
 draw_pokemons(best_team)
 
 optimal_team_table = pd.DataFrame(
     [
         get_names(data, selected_opponent.pokemons),
         get_turns_to_defeat(x=x, team_ids=best_team, opponent_ids=selected_opponent.pokemons),
+        get_turns_to_defeat(x=x, team_ids=selected_opponent.pokemons, opponent_ids=best_team),
         get_turn_difference(t=t, team_ids=best_team, opponent_ids=selected_opponent.pokemons),
         get_damage(d=damage, team_ids=best_team, opponent_ids=selected_opponent.pokemons),
         get_damage(d=damage, team_ids=selected_opponent.pokemons, opponent_ids=best_team),
@@ -160,7 +164,7 @@ optimal_team_table = pd.DataFrame(
         [60] * len(best_team)
     ],
     columns=get_names(data, best_team),
-    index=['Against opponent', 'Turns to defeat opponent', 'Turn difference against opponent',
+    index=['Against opponent', 'Turns to defeat opponent', 'Turns to be defeated', 'Turn difference against opponent',
            'Damage against opponent', 'Damage from opponent', 'Type 1', 'Type 2', 'Hitpoints', 'Level'])
 
 optimal_team_table

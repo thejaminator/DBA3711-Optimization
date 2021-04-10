@@ -6,7 +6,7 @@ import numpy as np
 import streamlit as st
 import pandas as pd
 @st.cache
-def load_dataset() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]: # data, t, x, d
+def load_dataset() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]: # data, t, x, d
     pokedex = pd.read_csv('project/pokedex.csv')
     moves = pd.read_csv('project/pokemon-moves.csv')
     url = 'https://raw.githubusercontent.com/Deskbot/Pokemon-Learnsets/master/output/gen3.json'
@@ -94,7 +94,6 @@ def load_dataset() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]: # data, t
     # create 151 by 151 matrix for # turns j needs to defeat i
     y = x.transpose()
 
-    # only round x up here, because we want x to have decimal place for minimisation purpose
-    t = y - x.apply(np.ceil)
-    # t is turns needs for j to defeat i
+    # t is spare turns for i to defeat j
+    t = y.apply(np.ceil) - x.apply(np.ceil)
     return (data, t, x, d)

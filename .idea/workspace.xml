@@ -2,30 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d600fa91-e781-4e5a-ac25-30d245eb5018" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Lecture 7/.Lecture07.pdf.icloud" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Lecture 8/.Lecture08.pdf.icloud" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hw 8/Market-Soap-Example-1.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hw3/Homework 3 DBA3701.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hw3/Homework 3 DBA3701.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hw3/Homework 3 DBA3701.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture 4/.Lecture04.pdf.icloud" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lecture 6/.Lecture06.pdf.icloud" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/dataset.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/opti tryout2 .ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/optim_model.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/pokedex.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/pokemon-moves.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lecture 7/Lecture07.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lecture 8.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lecture 8/Lecture08.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lecture06.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hw3/hw3.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/hw3/.ipynb_checkpoints/Homework 3 DBA3701-checkpoint.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lecture 4/Lecture04.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lecture 6/Lecture06.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/dataset.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/optim_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/optim_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +75,7 @@
       <workItem from="1616312825684" duration="6311000" />
       <workItem from="1616380663568" duration="1311000" />
       <workItem from="1616383957365" duration="1670000" />
-      <workItem from="1617951424369" duration="11784000" />
+      <workItem from="1617951424369" duration="13724000" />
     </task>
     <servers />
   </component>
