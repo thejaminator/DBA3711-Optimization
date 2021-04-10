@@ -49,7 +49,7 @@ def draw_pokemons(pokemon_ids: List[PokedexId]):
 
 
 """## Selected Opponent"""
-st.write(selected_opponent.opponent_name)
+st.markdown(selected_opponent.opponent_name)
 
 if selected_opponent_key == custom.opponent_name:
     # custom opponent
@@ -136,7 +136,7 @@ def draw_banned_pokemon():
             # sum(c[to_mat_idx(pokedex_id), j] for pokedex_id in banned_pokemon) == 0
             # for j in range(no_opponents)
             mat_idx = to_mat_idx(name_to_pokedex_number[selected])
-            blank_slot.write(
+            blank_slot.markdown(
                 f"Added constraint: $C_{{{mat_idx},j}} = 0$ for all $j \in$ Opponent Pokemons")
             banned_pokemon.append(name_to_pokedex_number[selected])
 
@@ -153,12 +153,12 @@ def draw_objective_function():
     blank_slot_1 = st.empty()
     turn_difference_chosen = objective_function == "Maximise turns difference against opponent"
     if turn_difference_chosen:
-        blank_slot_1.write(
+        blank_slot_1.markdown(
             "Objective Function: $max \sum_{i \in{A}} \sum_{j \in{O}} C_{ij} T_{ij}$ where $A$ denotes the set of "
             "all pokemons and $O$ denotes the set of pokemon opponents")
 
     else:
-        blank_slot_1.write(
+        blank_slot_1.markdown(
             "Objective Function: $min \sum_{i \in{A}} \sum_{j \in{O}} C_{ij} X_{ij}$ where $A$ denotes the set of "
             "all pokemons and $O$ denotes the set of pokemon opponents")
     return turn_difference_chosen
@@ -169,12 +169,12 @@ turn_difference_chosen = draw_objective_function()
 unique_pokemon = st.checkbox("Enforce pokemon to be unique", value=True)
 blank_slot = st.empty()  # no need to render below elements by using a blank slot
 if unique_pokemon:
-    blank_slot.write(
+    blank_slot.markdown(
         "Added constraint: $C_{i,j} \leq 1$ for all $j \in$ Opponent Pokemons")
 
 min_turn_difference = st.slider("Minimum turn difference", min_value=0, max_value=20, step=1)
-st.write(
-    f"Added constraint: $C_{{i,j}} T_{{i,j}} \geq {min_turn_difference}$ for all $i \in$ Selected Pokemons and $j \in$ Opponent Pokemons")
+st.markdown(
+    f"Constraint: $C_{{i,j}} T_{{i,j}} \geq {min_turn_difference}$ for all $i \in$ Selected Pokemons and $j \in$ Opponent Pokemons")
 
 try:
     best_team: List[PokedexId] = run_model(data=data, t=t, x=x, opponents=selected_opponent.pokemons,
