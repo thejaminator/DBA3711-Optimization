@@ -12,6 +12,7 @@ def run_model(data: pd.DataFrame, x: pd.DataFrame,
               enforce_unique_pokemon: bool,
               maximise_turn_difference: bool,
               ) -> List[int]:
+    """Returns list of optimal pokedex pokemon ids, sorted in same order as the opponents"""
     no_pokemons = len(data)
     no_opponents = len(opponents)
     # preparing an optimization model
