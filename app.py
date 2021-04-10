@@ -29,8 +29,11 @@ selected_opponent: OpponentInfo = opponents[selected_opponent_key]
 
 # data has attributes name, pokedex_number
 data, t, x, damage = load_dataset()
-name_id: Dict[str, PokedexId] = dict(zip(data.name, data.pokedex_number))
+name_to_pokedex_number: Dict[str, PokedexId] = dict(zip(data.name, data.pokedex_number))
 
+
+def to_mat_idx(pokemon_id: PokedexId):
+    return pokemon_id - 1  # should do data[data.pokedex_number == pokemon_id].index[0] if order is not assured
 
 
 def fetch_image_path(pokemon_id: PokedexId) -> pathlib.Path:
@@ -54,10 +57,10 @@ if selected_opponent_key == custom.opponent_name:
     custom_opponent_pokemon = [None] * 6
     for idx, column in enumerate(columns):
         with column:
-            custom.pokemons[idx] = name_id[st.selectbox(
+            custom.pokemons[idx] = name_to_pokedex_number[st.selectbox(
                 "",
                 options=list(data.name),
-                index=custom.pokemons[idx]-1, # hack to show custom opponent pokemon on start
+                index=custom.pokemons[idx] - 1,  # hack to show custom opponent pokemon on start
                 key=f"custom_{idx}"
             )]
 draw_pokemons(selected_opponent.pokemons)
@@ -118,19 +121,34 @@ opponent_table  # draw opponent table
 
 """## Banned pokemon"""
 
-banned_pokemon: List[PokedexId] = [None]
-for idx, pokemon_id in enumerate(banned_pokemon):
-    selected = st.selectbox(
-                        "",
-                        options=[None] + list(data.name),
-                        key=f"banned_{idx}"
-                    )
-    if selected is not None: # Otherwise this will draw infinitely
-        banned_pokemon.append(name_id[selected])
+banned_pokemon: List[PokedexId] = [None] # todo: some optimizaitons with st.empty() so you don't have to redraw page
+def draw_banned_pokemon():
+    for idx, pokemon_id in enumerate(banned_pokemon):
+        selected = st.selectbox(
+            "",
+            options=[None] + list(data.name),
+            key=f"banned_{idx}"
+        )
+        blank_slot = st.empty()
+        if selected is not None:  # Otherwise this will draw infinitely
+            # sum(c[to_mat_idx(pokedex_id), j] for pokedex_id in banned_pokemon) == 0
+            # for j in range(no_opponents)
+            mat_idx = to_mat_idx(name_to_pokedex_number[selected])
+            blank_slot.write(
+                f"Added constraint $C_{{{mat_idx},j}} = 0$ for all j $\in$ Opponent Pokemons")
+            banned_pokemon.append(name_to_pokedex_number[selected])
+draw_banned_pokemon()
 """## Optimal team"""
 
-unique_pokemon = st.checkbox("Enforce pokemon to be unique", value=True)
 maximise_turn_difference = st.checkbox("Maximise turn difference instead of minimizing turns to win", value=False)
+
+
+unique_pokemon = st.checkbox("Enforce pokemon to be unique", value=True)
+blank_slot = st.empty() # no need to render below elements by using a blank slot
+if unique_pokemon:
+    blank_slot.write(
+        "Added constraint $C_{i,j} \leq 1$ for all j $\in$ Opponent Pokemons")
+
 
 # st.write("$\sum_{i\in{All pokemons}} \sum_{j\in{Opponent pokemons}} Turns_{ij}$")
 best_team: List[PokedexId] = run_model(data=data, t=t, x=x, opponents=selected_opponent.pokemons,
