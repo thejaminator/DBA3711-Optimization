@@ -29,6 +29,7 @@ selected_opponent: OpponentInfo = opponents[selected_opponent_key]
 
 # data has attributes name, pokedex_number
 data, t, x, damage = load_dataset()
+name_id: Dict[str, PokedexId] = dict(zip(data.name, data.pokedex_number))
 
 
 
@@ -48,7 +49,6 @@ def draw_pokemons(pokemon_ids: List[PokedexId]):
 st.write(selected_opponent.opponent_name)
 
 if selected_opponent_key == custom.opponent_name:
-    name_id: Dict[str, PokedexId] = dict(zip(data.name, data.pokedex_number))
     # custom opponent
     columns = st.beta_columns(6)
     custom_opponent_pokemon = [None] * 6
@@ -116,6 +116,17 @@ opponent_table = pd.DataFrame(
 
 opponent_table  # draw opponent table
 
+"""## Banned pokemon"""
+
+banned_pokemon: List[PokedexId] = [None]
+for idx, pokemon_id in enumerate(banned_pokemon):
+    selected = st.selectbox(
+                        "",
+                        options=[None] + list(data.name),
+                        key=f"banned_{idx}"
+                    )
+    if selected is not None: # Otherwise this will draw infinitely
+        banned_pokemon.append(name_id[selected])
 """## Optimal team"""
 
 unique_pokemon = st.checkbox("Enforce pokemon to be unique", value=True)
@@ -124,7 +135,8 @@ maximise_turn_difference = st.checkbox("Maximise turn difference instead of mini
 # st.write("$\sum_{i\in{All pokemons}} \sum_{j\in{Opponent pokemons}} Turns_{ij}$")
 best_team: List[PokedexId] = run_model(data=data, t=t, x=x, opponents=selected_opponent.pokemons,
                                        enforce_unique_pokemon=unique_pokemon,
-                                       maximise_turn_difference=maximise_turn_difference)
+                                       maximise_turn_difference=maximise_turn_difference,
+                                       banned_pokemon=[poke_id for poke_id in banned_pokemon if poke_id is not None])
 
 draw_pokemons(best_team)
 
