@@ -121,7 +121,9 @@ opponent_table  # draw opponent table
 
 """## Banned pokemon"""
 
-banned_pokemon: List[PokedexId] = [None] # todo: some optimizaitons with st.empty() so you don't have to redraw page
+banned_pokemon: List[PokedexId] = [None]  # todo: some optimizaitons with st.empty() so you don't have to redraw page
+
+
 def draw_banned_pokemon():
     for idx, pokemon_id in enumerate(banned_pokemon):
         selected = st.selectbox(
@@ -137,23 +139,37 @@ def draw_banned_pokemon():
             blank_slot.write(
                 f"Added constraint $C_{{{mat_idx},j}} = 0$ for all j $\in$ Opponent Pokemons")
             banned_pokemon.append(name_to_pokedex_number[selected])
+
+
 draw_banned_pokemon()
 """## Optimal team"""
 
-maximise_turn_difference = st.checkbox("Maximise turn difference instead of minimizing turns to win", value=False)
+def draw_objective_function():
+    objective_function = st.selectbox("Objective function",
+                                      options=["Maximise turns difference against opponent", "Minimize turns needed to win"]
+                                      , index=1)
+    blank_slot_1 = st.empty()
+    turn_difference_chosen = objective_function == "Maximise turns difference against opponent"
+    if turn_difference_chosen:
+        blank_slot_1.write(
+            "Objective Function: $max \sum_{i \in{A}} \sum_{j \in{O}} C_{ij} T_{ij}$ where $A$ denotes the set of "
+            "all pokemons and $O$ denotes the set of pokemon opponents")
 
+    else:
+        blank_slot_1.write(
+            "Objective Function: $min \sum_{i \in{A}} \sum_{j \in{O}} C_{ij} X_{ij}$ where $A$ denotes the set of "
+            "all pokemons and $O$ denotes the set of pokemon opponents")
+    return turn_difference_chosen
+turn_difference_chosen = draw_objective_function()
 
 unique_pokemon = st.checkbox("Enforce pokemon to be unique", value=True)
-blank_slot = st.empty() # no need to render below elements by using a blank slot
+blank_slot = st.empty()  # no need to render below elements by using a blank slot
 if unique_pokemon:
     blank_slot.write(
         "Added constraint $C_{i,j} \leq 1$ for all j $\in$ Opponent Pokemons")
-
-
-# st.write("$\sum_{i\in{All pokemons}} \sum_{j\in{Opponent pokemons}} Turns_{ij}$")
 best_team: List[PokedexId] = run_model(data=data, t=t, x=x, opponents=selected_opponent.pokemons,
                                        enforce_unique_pokemon=unique_pokemon,
-                                       maximise_turn_difference=maximise_turn_difference,
+                                       maximise_turn_difference=turn_difference_chosen,
                                        banned_pokemon=[poke_id for poke_id in banned_pokemon if poke_id is not None])
 
 draw_pokemons(best_team)
