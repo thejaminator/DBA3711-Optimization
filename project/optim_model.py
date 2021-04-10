@@ -21,10 +21,6 @@ def run_model(data: pd.DataFrame, x: pd.DataFrame,
     """Returns list of optimal pokedex pokemon ids, sorted in same order as the opponents"""
 
 
-    # couldn't put this into the line >> chosen pokemons must be able to defeat opponent (no negative turn difference).
-    # because if constraint is for the all the products to be  greater than e.g. 1, then all the pokemon would need to be chosen
-    t = t - min_turn_difference
-
     def to_mat_idx(pokemon_id: PokedexId):
         return pokemon_id - 1  # should do data[data.pokedex_number == pokemon_id].index[0] if order is not assured
 
@@ -52,8 +48,9 @@ def run_model(data: pd.DataFrame, x: pd.DataFrame,
     if enforce_unique_pokemon:
         mod.addConstrs(sum(c[i, j] for j in range(no_opponents)) <= 1 for i in range(no_pokemons))
     mod.addConstrs(sum(c[i, j] for i in range(no_pokemons)) == 1 for j in range(no_opponents))
-    # chosen pokemons must be able to defeat opponent (no negative turn difference)
-    mod.addConstrs(c[i, j] * t.iloc[i, opponents[j] - 1] >= 0 for i in range(no_pokemons) for j in range(no_opponents))
+    # chosen pokemons must be able to defeat opponent (no negative turn difference or less than min_turn_difference)
+    mod.addConstrs((c[i,j] == 1) >> (c[i,j] * t.iloc[i, opponents[j] - 1] >= min_turn_difference)
+                   for i in range(no_pokemons) for j in range(no_opponents))
 
     # for pokemons who are slower and turn difference < 1, they would be first defeated by opponent
     mod.addConstrs(c[i, j] == 0 for i in range(no_pokemons) for j in range(no_opponents) if

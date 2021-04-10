@@ -137,16 +137,18 @@ def draw_banned_pokemon():
             # for j in range(no_opponents)
             mat_idx = to_mat_idx(name_to_pokedex_number[selected])
             blank_slot.write(
-                f"Added constraint $C_{{{mat_idx},j}} = 0$ for all j $\in$ Opponent Pokemons")
+                f"Added constraint: $C_{{{mat_idx},j}} = 0$ for all $j \in$ Opponent Pokemons")
             banned_pokemon.append(name_to_pokedex_number[selected])
 
 
 draw_banned_pokemon()
 """## Optimal team"""
 
+
 def draw_objective_function():
     objective_function = st.selectbox("Objective function",
-                                      options=["Maximise turns difference against opponent", "Minimize turns needed to win"]
+                                      options=["Maximise turns difference against opponent",
+                                               "Minimize turns needed to win"]
                                       , index=1)
     blank_slot_1 = st.empty()
     turn_difference_chosen = objective_function == "Maximise turns difference against opponent"
@@ -160,23 +162,29 @@ def draw_objective_function():
             "Objective Function: $min \sum_{i \in{A}} \sum_{j \in{O}} C_{ij} X_{ij}$ where $A$ denotes the set of "
             "all pokemons and $O$ denotes the set of pokemon opponents")
     return turn_difference_chosen
+
+
 turn_difference_chosen = draw_objective_function()
 
 unique_pokemon = st.checkbox("Enforce pokemon to be unique", value=True)
 blank_slot = st.empty()  # no need to render below elements by using a blank slot
 if unique_pokemon:
     blank_slot.write(
-        "Added constraint $C_{i,j} \leq 1$ for all j $\in$ Opponent Pokemons")
+        "Added constraint: $C_{i,j} \leq 1$ for all $j \in$ Opponent Pokemons")
 
-min_turn_difference = st.slider("Minimum turn difference",min_value=0, max_value=20, step=1)
+min_turn_difference = st.slider("Minimum turn difference", min_value=0, max_value=20, step=1)
+st.write(
+    f"Added constraint: $C_{{i,j}} T_{{i,j}} \geq {min_turn_difference}$ for all $i \in$ Selected Pokemons and $j \in$ Opponent Pokemons")
+
 try:
     best_team: List[PokedexId] = run_model(data=data, t=t, x=x, opponents=selected_opponent.pokemons,
-                                       enforce_unique_pokemon=unique_pokemon,
-                                       maximise_turn_difference=turn_difference_chosen,
-                                       banned_pokemon=[poke_id for poke_id in banned_pokemon if poke_id is not None],
-                                       min_turn_difference=min_turn_difference)
+                                           enforce_unique_pokemon=unique_pokemon,
+                                           maximise_turn_difference=turn_difference_chosen,
+                                           banned_pokemon=[poke_id for poke_id in banned_pokemon if
+                                                           poke_id is not None],
+                                           min_turn_difference=min_turn_difference)
 except AttributeError as e:
-    raise AssertionError("Infeasible Model")
+    raise AssertionError("Infeasible Model")  # Catch to show this rather than ugly attribute error.
 
 draw_pokemons(best_team)
 
