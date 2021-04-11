@@ -170,7 +170,7 @@ def draw_objective_function():
     return turn_difference_chosen
 
 
-turn_difference_chosen = draw_objective_function()
+use_max_turn_diff_obj = draw_objective_function()
 
 unique_pokemon = st.checkbox("Enforce pokemon to be unique", value=True)
 blank_slot = st.empty()  # no need to render below elements by using a blank slot
@@ -185,7 +185,7 @@ st.markdown(
 try:
     best_team: List[PokedexId] = run_model(data=data, t=t, x=x, opponents=selected_opponent.pokemons,
                                            enforce_unique_pokemon=unique_pokemon,
-                                           maximise_turn_difference=turn_difference_chosen,
+                                           use_max_turn_diff_obj=use_max_turn_diff_obj,
                                            banned_pokemon=[poke_id for poke_id in banned_pokemon if
                                                            poke_id is not None],
                                            must_have_pokemon=[poke_id for poke_id in must_have_pokemon if

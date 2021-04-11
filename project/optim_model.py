@@ -13,7 +13,7 @@ def run_model(data: pd.DataFrame, x: pd.DataFrame,
               t: pd.DataFrame,
               opponents: List[PokedexId],
               enforce_unique_pokemon: bool,
-              maximise_turn_difference: bool,
+              use_max_turn_diff_obj: bool,
               banned_pokemon: List[PokedexId],
               must_have_pokemon: List[PokedexId],
               min_turn_difference: int = 0,
@@ -34,7 +34,7 @@ def run_model(data: pd.DataFrame, x: pd.DataFrame,
 
     # setting the objective such that it helps us end the game as fast as possible
     # but if want to make it safer, we should maximise the turn difference:
-    if maximise_turn_difference:
+    if use_max_turn_diff_obj:
         mod.setObjective(
             sum(c[i, j] * t.iloc[i, opponents[j] - 1] for i in range(no_pokemons) for j in range(no_opponents)),
             GRB.MAXIMIZE)
