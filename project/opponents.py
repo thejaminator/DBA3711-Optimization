@@ -40,13 +40,31 @@ lance = OpponentInfo(opponent_name="Lance", pokemons=[
     148
 ])
 
-champion = OpponentInfo(opponent_name="Champion Green", pokemons=[
+champion_venusaur = OpponentInfo(opponent_name="Champion (Venusaur)", pokemons=[
     18,
     65,
     112,
     130,
     59,
     3
+])
+
+champion_charizard = OpponentInfo(opponent_name="Champion (Charizard)", pokemons=[
+    18,
+    65,
+    112,
+    130,
+    59,
+    6
+])
+
+champion_blastoise = OpponentInfo(opponent_name="Champion (Blastoise)", pokemons=[
+    18,
+    65,
+    112,
+    130,
+    59,
+    9
 ])
 
 custom = OpponentInfo(opponent_name="Custom opponent", pokemons=[

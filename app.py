@@ -5,7 +5,8 @@ import pathlib
 import pandas as pd
 
 from project.dataset import load_dataset
-from project.opponents import OpponentInfo, agatha, loreli, bruno, lance, champion, custom
+from project.opponents import OpponentInfo, agatha, loreli, bruno, lance, custom, champion_charizard, \
+    champion_blastoise, champion_venusaur
 from project.optim_model import run_model
 from project.types import PokedexId
 
@@ -16,7 +17,9 @@ opponents: Dict[str, OpponentInfo] = {
     loreli.opponent_name: loreli,
     bruno.opponent_name: bruno,
     lance.opponent_name: lance,
-    champion.opponent_name: champion,
+    champion_charizard.opponent_name: champion_charizard,
+    champion_blastoise.opponent_name : champion_blastoise,
+    champion_venusaur.opponent_name : champion_venusaur,
     custom.opponent_name: custom
 }
 
