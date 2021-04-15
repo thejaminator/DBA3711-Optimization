@@ -3,8 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="d600fa91-e781-4e5a-ac25-30d245eb5018" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/app.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project/optim_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/project/optim_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,8 +49,8 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/project" />
       <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/project" />
       <recent name="$PROJECT_DIR$/hw3" />
       <recent name="$PROJECT_DIR$/lecture 5" />
       <recent name="$PROJECT_DIR$/lecture 6" />
@@ -75,7 +78,8 @@
       <workItem from="1616383957365" duration="1670000" />
       <workItem from="1617951424369" duration="16017000" />
       <workItem from="1618048681542" duration="451000" />
-      <workItem from="1618074757837" duration="16579000" />
+      <workItem from="1618074757837" duration="16803000" />
+      <workItem from="1618328955788" duration="7426000" />
     </task>
     <servers />
   </component>

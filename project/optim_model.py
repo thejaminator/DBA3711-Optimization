@@ -16,8 +16,7 @@ def run_model(data: pd.DataFrame, x: pd.DataFrame,
               use_max_turn_diff_obj: bool,
               banned_pokemon: List[PokedexId],
               must_have_pokemon: List[PokedexId],
-              min_turn_difference: int = 0,
-
+              min_turn_difference: int = 0
               ) -> List[PokedexId]:
     """Returns list of optimal pokedex pokemon ids, sorted in same order as the opponents"""
 

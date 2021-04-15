@@ -6,8 +6,8 @@ EXPOSE 8080
 RUN pip install -U pip
 
 COPY requirements.txt app/requirements.txt
-#RUN pip install -r app/requirements.txt
-#RUN pip install -i https://pypi.gurobi.com gurobipy
+RUN pip install -r app/requirements.txt
+RUN pip install -i https://pypi.gurobi.com gurobipy
 RUN grbgetkey f518227c-9a3f-11eb-a577-0242ac120002
 
 # copy into a directory of its own (so it isn't in the toplevel dir)

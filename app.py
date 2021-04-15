@@ -138,7 +138,7 @@ def draw_multi_pokemon(unique_key: str, equal_to: int):
         if selected is not None:  # Otherwise this will draw infinitely
             mat_idx = to_mat_idx(name_to_pokedex_number[selected])
             blank_slot.markdown(
-                f"Added constraint: $C_{{{mat_idx},j}} = {equal_to}$ for all $j \in$ Opponent Pokemons")
+                f"Added constraint: $\sum_{{j \in{{O}}}} C_{{{mat_idx},j}} = {equal_to}$ where $O$ denotes the set of opponent pokemons")
             chosen_pokemon.append(name_to_pokedex_number[selected])
     return chosen_pokemon
 
@@ -161,12 +161,12 @@ def draw_objective_function():
     if turn_difference_chosen:
         blank_slot_1.markdown(
             "Objective Function: $max \sum_{i \in{A}} \sum_{j \in{O}} C_{ij} T_{ij}$ where $A$ denotes the set of "
-            "all pokemons and $O$ denotes the set of pokemon opponents")
+            "all pokemons and $O$ denotes the set of opponent pokemons")
 
     else:
         blank_slot_1.markdown(
             "Objective Function: $min \sum_{i \in{A}} \sum_{j \in{O}} C_{ij} X_{ij}$ where $A$ denotes the set of "
-            "all pokemons and $O$ denotes the set of pokemon opponents")
+            "all pokemons and $O$ denotes the set of opponent pokemons")
     return turn_difference_chosen
 
 
