@@ -152,7 +152,8 @@ banned_pokemon = draw_multi_pokemon("banned", equal_to=0)
 must_have_pokemon = draw_multi_pokemon("must_have", equal_to=1)
 """## Optimal team"""
 
-
+best_pokemon_pictures_view = st.empty()
+optimal_team_table_view = st.empty()
 def draw_objective_function():
     options = ["Maximise turns difference against opponent (Safer)",
                                                "Minimize turns to defeat opponent (Faster)"]
@@ -195,9 +196,15 @@ try:
                                                               poke_id is not None],
                                            min_turn_difference=min_turn_difference)
 except AttributeError as e:
-    raise AssertionError("Infeasible Model")  # Catch to show this rather than ugly attribute error.
+    best_team = []
+    st.error("Infeasible Model")
+    # raise AssertionError("Infeasible Model")  # Catch to show this rather than ugly attribute error.
 
-draw_pokemons(best_team)
+
+images: List[str] = []
+for pokemon_id in best_team:
+    images.append(str(fetch_image_path(pokemon_id=pokemon_id)))
+best_pokemon_pictures_view.image(images) # do this instead of draw_pokemons(best_team) to move it after Optimal Team
 
 optimal_team_table = pd.DataFrame(
     [
@@ -216,7 +223,7 @@ optimal_team_table = pd.DataFrame(
     index=['Fight against opponent', 'Turns to defeat opponent', 'Turns to be defeated', 'Turn difference against opponent',
            'Damage against opponent', 'Damage from opponent', 'Type 1', 'Type 2', 'Hitpoints', 'Level'])
 
-optimal_team_table
+optimal_team_table_view.dataframe(optimal_team_table)
 
 # Sidebar stuff
 
