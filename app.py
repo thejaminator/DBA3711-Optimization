@@ -124,7 +124,7 @@ opponent_table = pd.DataFrame(
 
 opponent_table  # draw opponent table
 
-"""## Banned pokemon"""
+"""Banned pokemon"""
 
 
 def draw_multi_pokemon(unique_key: str, equal_to: int):
@@ -147,19 +147,20 @@ def draw_multi_pokemon(unique_key: str, equal_to: int):
 
 banned_pokemon = draw_multi_pokemon("banned", equal_to=0)
 
-"""## Pokemon I definitely want in the team"""
+"""Pokemon I definitely want in the team"""
 
 must_have_pokemon = draw_multi_pokemon("must_have", equal_to=1)
 """## Optimal team"""
 
 
 def draw_objective_function():
+    options = ["Maximise turns difference against opponent (Safer)",
+                                               "Minimize turns to defeat opponent (Faster)"]
     objective_function = st.selectbox("Objective function",
-                                      options=["Maximise turns difference against opponent",
-                                               "Minimize turns to defeat opponent"]
+                                      options=options
                                       , index=1)
     blank_slot_1 = st.empty()
-    turn_difference_chosen = objective_function == "Maximise turns difference against opponent"
+    turn_difference_chosen = objective_function == options[0]
     if turn_difference_chosen:
         blank_slot_1.markdown(
             "$max \sum_{i \in{A}} \sum_{j \in{O}} C_{ij} T_{ij}$ where $A$ denotes the set of "
@@ -178,7 +179,7 @@ unique_pokemon = st.checkbox("Enforce pokemon to be unique", value=True)
 blank_slot = st.empty()  # no need to render below elements by using a blank slot
 if unique_pokemon:
     blank_slot.markdown(
-        "Added constraint: $C_{i,j} \leq 1$ for all $j \in$ Opponent Pokemons")
+        "Added constraint: $\sum_{j \in{O}} C_{i,j} \leq 1$ for all $i \in$ all Pokemons. $O$ denotes set of opponent pokemons.")
 
 min_turn_difference = st.slider("Minimum turn difference", min_value=0, max_value=20, step=1)
 st.markdown(
@@ -216,3 +217,9 @@ optimal_team_table = pd.DataFrame(
            'Damage against opponent', 'Damage from opponent', 'Type 1', 'Type 2', 'Hitpoints', 'Level'])
 
 optimal_team_table
+
+# Sidebar stuff
+
+st.sidebar.markdown("## Metrics")
+st.sidebar.markdown("Turn difference against opponent: " + str(to_1_dp(sum(get_turn_difference(t=t, team_ids=best_team, opponent_ids=selected_opponent.pokemons)))))
+st.sidebar.markdown("Turns to defeat opponent: " + str(to_1_dp(sum(get_turns_to_defeat(x=x, team_ids=best_team, opponent_ids=selected_opponent.pokemons)))))
