@@ -93,22 +93,24 @@ def get_hp(data: pd.DataFrame, pokedex_ids: List[PokedexId]):
 def to_mat_idx(pokemon_id: PokedexId):
     return data[data.pokedex_number == pokemon_id].index[0]
 
+def to_1_dp(a_float: float) -> float:
+    return round(a_float, 1)
 
 def get_turns_to_defeat(x: pd.DataFrame, team_ids: List[PokedexId], opponent_ids: List[PokedexId]):
     """x: NxN matrix indicating turns to defeat opponent pokemon"""
-    return [floor(x.iloc[to_mat_idx(team_id), to_mat_idx(opponent_id)]) for team_id, opponent_id in
+    return [to_1_dp(x.iloc[to_mat_idx(team_id), to_mat_idx(opponent_id)]) for team_id, opponent_id in
             zip(team_ids, opponent_ids)]
 
 
 def get_turn_difference(t: pd.DataFrame, team_ids: List[PokedexId], opponent_ids: List[PokedexId]):
     """t: NxN matrix indicating turn difference aainst opponent pokemon"""
-    return [floor(t.iloc[to_mat_idx(team_id), to_mat_idx(opponent_id)]) for team_id, opponent_id in
+    return [to_1_dp(t.iloc[to_mat_idx(team_id), to_mat_idx(opponent_id)]) for team_id, opponent_id in
             zip(team_ids, opponent_ids)]
 
 
 def get_damage(d: pd.DataFrame, team_ids: List[PokedexId], opponent_ids: List[PokedexId]):
     """d: NxN matrix indicating damage agaun opponent pokemon"""
-    return [floor(d.iloc[to_mat_idx(team_id), to_mat_idx(opponent_id)]) for team_id, opponent_id in
+    return [to_1_dp(d.iloc[to_mat_idx(team_id), to_mat_idx(opponent_id)]) for team_id, opponent_id in
             zip(team_ids, opponent_ids)]
 
 
@@ -154,18 +156,18 @@ must_have_pokemon = draw_multi_pokemon("must_have", equal_to=1)
 def draw_objective_function():
     objective_function = st.selectbox("Objective function",
                                       options=["Maximise turns difference against opponent",
-                                               "Minimize turns needed to win"]
+                                               "Minimize turns to defeat opponent"]
                                       , index=1)
     blank_slot_1 = st.empty()
     turn_difference_chosen = objective_function == "Maximise turns difference against opponent"
     if turn_difference_chosen:
         blank_slot_1.markdown(
-            "Objective Function: $max \sum_{i \in{A}} \sum_{j \in{O}} C_{ij} T_{ij}$ where $A$ denotes the set of "
+            "$max \sum_{i \in{A}} \sum_{j \in{O}} C_{ij} T_{ij}$ where $A$ denotes the set of "
             "all pokemons and $O$ denotes the set of opponent pokemons")
 
     else:
         blank_slot_1.markdown(
-            "Objective Function: $min \sum_{i \in{A}} \sum_{j \in{O}} C_{ij} X_{ij}$ where $A$ denotes the set of "
+            "$min \sum_{i \in{A}} \sum_{j \in{O}} C_{ij} X_{ij}$ where $A$ denotes the set of "
             "all pokemons and $O$ denotes the set of opponent pokemons")
     return turn_difference_chosen
 
@@ -210,7 +212,7 @@ optimal_team_table = pd.DataFrame(
         [60] * len(best_team)
     ],
     columns=get_names(data, best_team),
-    index=['Against opponent', 'Turns to defeat opponent', 'Turns to be defeated', 'Turn difference against opponent',
+    index=['Fight against opponent', 'Turns to defeat opponent', 'Turns to be defeated', 'Turn difference against opponent',
            'Damage against opponent', 'Damage from opponent', 'Type 1', 'Type 2', 'Hitpoints', 'Level'])
 
 optimal_team_table

@@ -95,5 +95,5 @@ def load_dataset() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFra
     y = x.transpose()
 
     # t is spare turns for i to defeat j
-    t = y - x.apply(np.ceil)
+    t = y - x
     return (data, t, x, d)
