@@ -8,7 +8,6 @@ from gurobipy import *
 from project.types import PokedexId
 
 
-@st.cache
 def run_model(data: pd.DataFrame, x: pd.DataFrame,
               t: pd.DataFrame,
               opponents: List[PokedexId],
