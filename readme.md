@@ -8,14 +8,9 @@ pip install -i https://pypi.gurobi.com gurobipy
 
 Make sure u have a [gurobi license](https://www.gurobi.com/downloads/end-user-license-agreement-academic/)
 The files requirement to run the app are in the folder `project`. 
-You can ignore the other fodlers.
+You can ignore the other folders.
 
 Run the app
 ```
 streamlit run app.py --server.port 80
-```
-Ngrok hosting
-
-```
-ngrok http -region=ap -hostname=bestpokemon.ap.ngrok.io 80
 ```
